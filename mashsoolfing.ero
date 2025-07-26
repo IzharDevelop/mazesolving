@@ -1,0 +1,34 @@
+#include "functions_codes.h" 
+#include "mazehitam_code4.h" 
+
+
+void main(void){ 
+    mcu_initialization();
+    maju(5,50);
+    baca_hitam(3,5);
+    jeda_hitam(3);
+    baca_hitam(3,5);
+    kanan(5,3,200);
+    baca_hitam(3,5);
+    kanan(5,3,200);
+    baca_hitam(3,5);
+    kiri(5,3,400);
+    baca_hitam(3,5);
+    kanan(5,3,200);
+    baca_hitam(3,5);    
+    kiri(5,3,400);
+    baca_hitam(3,5);
+    kanan(5,3,200);
+    baca_hitam(3,5);
+    maju(5,50); 
+    baca_hitam(3,5);
+    kanan(5,3,400);
+    baca_hitam(3,5);
+    kiri(3,5,200);
+    baca_hitam(3,5);
+    kanan(5,3,200);
+    baca_hitam(3,5);
+    stop(100);
+    mundur(5,50);
+
+}
