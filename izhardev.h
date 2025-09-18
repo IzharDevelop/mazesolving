@@ -1,14 +1,13 @@
-
 //================================
 // Function to control the motors based on IR sensor readings
 void jeda_hitam(int speed) {
     while (1) {
     // Read IR sensors
-    int IR_1_B = ir_Modul(1, 50, NONE);
-    int IR_2_B = ir_Modul(2, 50, NONE);
-    int IR_3_B = ir_Modul(3, 50, NONE);
-    int IR_4_B = ir_Modul(4, 50, NONE);
-    int IR_5_B = ir_Modul(5, 50, NONE);
+    int IR_1_B = ir_Modul(1,  100, NONE);;
+    int IR_2_B = ir_Modul(2,  100, NONE);;
+    int IR_3_B = ir_Modul(3,  100, NONE);;
+    int IR_4_B = ir_Modul(4,  100, NONE);;
+    int IR_5_B = ir_Modul(5,  100, NONE);;
 
         // Check the status of each IR sensor and control motors accordingly
         if (IR_1_B == TRUE) {
@@ -38,7 +37,7 @@ void jeda_hitam(int speed) {
 void kotak_hitam(int speed) {
     while (1) { // Turn left until sensor 2 detects the line
         // Read IR sensors
-        int IR_2_B = ir_Modul(2, 50, NONE);
+        int IR_2_B = ir_Modul(2,  100, NONE);;
         kiri(speed, speed, 1); // Turn left for 1 second
 
         if (IR_2_B == TRUE) break; // Exit if sensor 2 detects the line
@@ -46,7 +45,7 @@ void kotak_hitam(int speed) {
     
     while (1) { // Turn right until sensor 4 detects the line   
         // Read IR sensors
-        int IR_4_B = ir_Modul(4, 50, NONE);
+        int IR_4_B = ir_Modul(4,  100, NONE);;
         kanan(speed, speed, 1); // Turn right for 1 second
 
         if (IR_4_B == TRUE) break; // Exit if sensor 4 detects the line
@@ -54,8 +53,8 @@ void kotak_hitam(int speed) {
     
     while (1) { // Move forward while checking the sensors    
         // Read IR sensors
-        int IR_2_B = ir_Modul(2, 50, NONE);
-        int IR_4_B = ir_Modul(4, 50, NONE);    
+        int IR_2_B = ir_Modul(2,  100, NONE);;
+        int IR_4_B = ir_Modul(4,  100, NONE);;    
 
         if (IR_2_B == TRUE) {
             moveMotors(STOP_DIRECTION, FORWARD_DIRECTION, 0, speed); // Stop left motor
@@ -77,11 +76,47 @@ void kotak_hitam(int speed) {
 void baca_hitam(int speedlow, int speedfast) { 
     while (1) { // Infinite loop for continuous operation
         // Read IR sensors
-        int IR_1_B = ir_Modul(1, 50, NONE);
-        int IR_2_B = ir_Modul(2, 50, NONE);
-        int IR_3_B = ir_Modul(3, 50, NONE);
-        int IR_4_B = ir_Modul(4, 50, NONE);
-        int IR_5_B = ir_Modul(5, 50, NONE);
+        int IR_1_B = ir_Modul(1,  100, NONE);;
+        int IR_2_B = ir_Modul(2,  100, NONE);;
+        int IR_3_B = ir_Modul(3,  100, NONE);;
+        int IR_4_B = ir_Modul(4,  100, NONE);;
+        int IR_5_B = ir_Modul(5,  100, NONE);;
+
+        // Check for stopping conditions
+        if ((IR_1_B == TRUE && IR_2_B == TRUE) ||
+            (IR_2_B == TRUE && IR_3_B == TRUE) ||
+            (IR_2_B == TRUE && IR_4_B == TRUE) ||
+            (IR_3_B == TRUE && IR_4_B == TRUE) ||
+            (IR_4_B == TRUE && IR_5_B == TRUE)) {
+            stop(100); 
+            break; // Stop for 100 ms & Exit the loop
+        } else { // Line following logic 
+            //======================================================================================
+            if (IR_3_B == TRUE) {
+                moveMotors(FORWARD_DIRECTION, FORWARD_DIRECTION, speedfast, speedfast); // Move forward
+            } else if (IR_1_B == TRUE) {
+                moveMotors(FORWARD_DIRECTION, BACKWARD_DIRECTION, speedfast, -speedfast); // Turn right
+            } else if (IR_2_B == TRUE) {
+                moveMotors(FORWARD_DIRECTION, FORWARD_DIRECTION, speedfast, speedlow); // Turn slightly right
+            } else if (IR_4_B == TRUE) {
+                moveMotors(FORWARD_DIRECTION, FORWARD_DIRECTION, speedlow, speedfast); // Turn slightly left
+            } else if (IR_5_B == TRUE) {
+                moveMotors(BACKWARD_DIRECTION, FORWARD_DIRECTION, -speedfast, speedfast); // Turn left
+            }
+
+        }
+    }    
+    //maju(speedfast, 50); // Move forward with speed for 100 ms
+    maju(-speedfast, 20);
+}
+void misi(int speedlow, int speedfast) { 
+    while (1) { // Infinite loop for continuous operation
+        // Read IR sensors
+        int IR_1_B = ir_Modul(1,  70, NONE);;
+        int IR_2_B = ir_Modul(2,  70, NONE);;
+        int IR_3_B = ir_Modul(3,  70, NONE);;
+        int IR_4_B = ir_Modul(4,  70, NONE);;
+        int IR_5_B = ir_Modul(5,  70, NONE);;
 
         // Check for stopping conditions
         if ((IR_1_B == TRUE && IR_2_B == TRUE) ||
@@ -97,9 +132,9 @@ void baca_hitam(int speedlow, int speedfast) {
             } else if (IR_1_B == TRUE) {
                 moveMotors(FORWARD_DIRECTION, BACKWARD_DIRECTION, speedfast, -speedfast); // Turn right
             } else if (IR_2_B == TRUE) {
-                moveMotors(FORWARD_DIRECTION, FORWARD_DIRECTION, speedlow, speedfast); // Turn slightly right
+                moveMotors(FORWARD_DIRECTION, FORWARD_DIRECTION, speedfast, speedlow); // Turn slightly right
             } else if (IR_4_B == TRUE) {
-                moveMotors(FORWARD_DIRECTION, FORWARD_DIRECTION, speedfast, speedlow); // Turn slightly left
+                moveMotors(FORWARD_DIRECTION, FORWARD_DIRECTION, speedlow, speedfast); // Turn slightly left
             } else if (IR_5_B == TRUE) {
                 moveMotors(BACKWARD_DIRECTION, FORWARD_DIRECTION, -speedfast, speedfast); // Turn left
             }
@@ -114,7 +149,7 @@ void baca_hitam(int speedlow, int speedfast) {
 void putarkanan_hitam(int speedL, int speedR) {
     while (1) {
         // Read IR sensors
-        int IR_3_B = ir_Modul(3, 50, NONE);
+        int IR_3_B = ir_Modul(3,  100, NONE);;
         moveMotors(FORWARD_DIRECTION, BACKWARD_DIRECTION, speedL, -speedR); // Turn right
 
         if (IR_3_B == TRUE) {
@@ -130,7 +165,7 @@ void putarkanan_hitam(int speedL, int speedR) {
 void putarkiri_hitam(int speedL, int speedR) {
     while (1) {
         // Read IR sensors
-        int IR_3_B = ir_Modul(3, 50, NONE);
+        int IR_3_B = ir_Modul(3,  100, NONE);;
         moveMotors(BACKWARD_DIRECTION, FORWARD_DIRECTION, -speedL, speedR); // Turn left
 
         if (IR_3_B == TRUE) {
